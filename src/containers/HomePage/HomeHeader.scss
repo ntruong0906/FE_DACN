@@ -1,3 +1,4 @@
+@import "../../styles/common.scss";
 .home-header-container {
     height: 82px;
     width: 100%;
@@ -116,6 +117,24 @@
                     opacity: 0.5;
                 }
             }
+            .btn-logout {
+                background-color: #757474; // Màu nền đen
+                color: #fff; // Màu chữ trắng
+                line-height: 30px;
+                height: 30px;
+                padding: 0 10px;
+                border: none; // Nếu muốn bỏ viền nút
+                border-radius: 9px; // Thêm bo góc cho nút, có thể thay đổi nếu cần
+            
+                &:hover {
+                    background-color: darken(#783e3e, 5%); 
+                }
+            
+                i {
+                    font-size: $base-size + 1px; // Giữ nguyên kích thước font của icon
+                }
+            }
+            
         }
     }
 }
