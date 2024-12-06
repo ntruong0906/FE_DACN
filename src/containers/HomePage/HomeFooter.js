@@ -9,7 +9,7 @@ class HomeFooter extends Component {
             <div className='home-footer'>
                 <strong>
                     <p>Copyright &copy; 2023 Made By
-                    <a target='_blank' href='https://www.facebook.com/duyanh.vu.39566/'> Davux.</a></p>
+                    <a target='_blank' href='https://www.facebook.com/profile.php?id=61558772075824'> NgocThach.</a></p>
                 </strong>
             </div>
         );

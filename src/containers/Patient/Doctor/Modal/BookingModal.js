@@ -54,24 +54,36 @@ class BookingModal extends Component {
         if (this.props.language !== prevProps.language) {
             this.setState({
                 genders: this.buildDataGender(this.props.genders)
-            })
+            });
         }
         if (this.props.genders !== prevProps.genders) {
             this.setState({
                 genders: this.buildDataGender(this.props.genders)
-            })
+            });
+        }
+        if (this.props.userInfo !== prevProps.userInfo && this.props.userInfo) {
+            console.log('userInfo:', this.props.userInfo);
+
+            // Cập nhật thông tin mặc định khi mở modal
+            this.setState({
+                fullName: `${this.props.userInfo.lastName} ${this.props.userInfo.firstName}` || '',
+                phoneNumber: this.props.userInfo.phoneNumber || '',
+                address: this.props.userInfo.address || '',
+                email: this.props.userInfo.email || ''
+            });
         }
         if (this.props.dataTime !== prevProps.dataTime) {
             if (this.props.dataTime && !_.isEmpty(this.props.dataTime)) {
-                let doctorIdData = this.props.dataTime.doctorId
-                let timeType = this.props.dataTime.timeType
+                let doctorIdData = this.props.dataTime.doctorId;
+                let timeType = this.props.dataTime.timeType;
                 this.setState({
                     doctorId: doctorIdData,
                     timeType: timeType
-                })
+                });
             }
         }
     }
+    
 
     handleOnChangeInput = (event, id) => {
         let valueInput = event.target.value
@@ -267,9 +279,11 @@ class BookingModal extends Component {
 }
 
 const mapStateToProps = state => {
+    console.log('Redux state userInfo:', state.user.userInfo);
     return {    
         language: state.app.language,
         genders: state.admin.genders,
+        userInfo: state.user.userInfo,
     };
 };
 

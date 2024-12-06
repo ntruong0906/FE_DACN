@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './HomeHeader.scss';
 import { FormattedMessage, IntlProvider, useIntl } from 'react-intl';
-import { LANGUAGES } from '../../utils';
+import { LANGUAGES, USER_ROLE } from '../../utils';
 import { changeLanguageApp } from '../../store/actions/appActions';
 import { withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import { fetchSearchSpecialty } from '../../store/actions/adminActions';
-
+import { adminMenu, doctorMenu } from '../Header/menuApp';
+import _ from 'lodash';
+import * as actions from "../../store/actions";
 class HomeHeader extends Component {
     constructor(props) {
         super(props)
@@ -62,9 +64,9 @@ class HomeHeader extends Component {
             this.handleViewSearchSpecialty()
         }
     }
-    
+
     render() {
-        let { language } = this.props
+        let { language, processLogout } = this.props
 
         return (
             <>
@@ -73,39 +75,49 @@ class HomeHeader extends Component {
                         <div className='left-content'>
                             <i class="fas fa-home" onClick={() => this.handleReturnToHome()}></i>
                             <div className='header-logo'
-                            onClick={() => this.handleReturnToHome()}
+                                onClick={() => this.handleReturnToHome()}
                             ></div>
                         </div>
                         <div className='center-content'>
                             <div className='child-content' onClick={() => this.handleViewAllSpecialty()}>
-                                <div><b><FormattedMessage id="homeheader.speciality"/></b></div>
-                                <div className='subs-title'><FormattedMessage id="homeheader.search-doctor"/></div>
+                                <div><b><FormattedMessage id="homeheader.speciality" /></b></div>
+                                <div className='subs-title'><FormattedMessage id="homeheader.search-doctor" /></div>
                             </div>
                             <div className='child-content' onClick={() => this.handleViewAllClinic()}>
-                                <div><b><FormattedMessage id="homeheader.health-facility"/></b></div>
-                                <div className='subs-title'><FormattedMessage id="homeheader.select-room"/></div>
+                                <div><b><FormattedMessage id="homeheader.health-facility" /></b></div>
+                                <div className='subs-title'><FormattedMessage id="homeheader.select-room" /></div>
                             </div>
                             <div className='child-content' onClick={() => this.handleViewAllDoctor()}>
-                                <div><b><FormattedMessage id="homeheader.doctor"/></b></div>
-                                <div className='subs-title'><FormattedMessage id="homeheader.select-doctor"/></div>
+                                <div><b><FormattedMessage id="homeheader.doctor" /></b></div>
+                                <div className='subs-title'><FormattedMessage id="homeheader.select-doctor" /></div>
                             </div>
                             <div className='child-content' onClick={() => this.handleViewAllHandbook()}>
-                                <div><b><FormattedMessage id="homeheader.handbook"/></b></div>
-                                <div className='subs-title'><FormattedMessage id="homeheader.handbook-ques"/></div>
+                                <div><b><FormattedMessage id="homeheader.handbook" /></b></div>
+                                <div className='subs-title'><FormattedMessage id="homeheader.handbook-ques" /></div>
                             </div>
                         </div>
                         <div className='right-content'>
                             <div className='support'>
-                                <a data-for='question' data-tip="React-tooltip" target="_blank" href="https://www.facebook.com/duyanh.vu.39566/">
+                                <a data-for='question' data-tip="React-tooltip" target="_blank" href="https://www.facebook.com/profile.php?id=61558772075824">
                                     <i className="fas fa-question-circle"></i><FormattedMessage id="homeheader.support" />
                                 </a>
                                 <ReactTooltip id='question' place="bottom" type="dark" effect="float">
-                                    <p><FormattedMessage id="homeheader.help"/></p>
+                                    <p><FormattedMessage id="homeheader.help" /></p>
                                 </ReactTooltip>
                             </div>
                             <div className={language === LANGUAGES.VI ? 'language-VI active' : 'language-VI'}><span onClick={() => this.changeLanguage(LANGUAGES.VI)}><strong>VN</strong></span></div>
                             <div className={language === LANGUAGES.EN ? 'language-EN active' : 'language-EN'}><span onClick={() => this.changeLanguage(LANGUAGES.EN)}><strong>EN</strong></span></div>
+                            <div
+                                className="btn btn-logout"
+                                onClick={() => {
+                                    this.props.processLogout(); 
+                                    this.props.history.push('/login'); 
+                                }}
+                                title="Log out">
+                                <i className="fas fa-sign-out-alt"></i>
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 {this.props.isShowBanner == true &&
@@ -115,7 +127,7 @@ class HomeHeader extends Component {
                             <div className='title2'><FormattedMessage id="banner.title2" /></div>
                             <div className='search'>
                                 <i className="fas fa-search"></i>
-                                <input type='text' placeholder='Search ...' onKeyDown={(event) => this.handleOnKeyDown(event)}/>
+                                <input type='text' placeholder='Search ...' onKeyDown={(event) => this.handleOnKeyDown(event)} />
                             </div>
                         </div>
                         <div className='content-down'>
@@ -166,6 +178,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        processLogout: () => dispatch(actions.processLogout()),
         changeLanguageAppRedux: (language) => dispatch(changeLanguageApp(language)),
         fetchSearchSpecialty: (nameInput) => dispatch(fetchSearchSpecialty(nameInput))
     };

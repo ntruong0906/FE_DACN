@@ -51,6 +51,9 @@ class Login extends Component {
                 if (data.user.roleId === 'R2') {
                     this.props.navigate('/doctor/manage-patient')
                 }
+                if (data.user.roleId === 'R3') {
+                    this.props.navigate('/')
+                }
             }
         } catch (e) {
             if(e.response){
