@@ -156,6 +156,7 @@ class ManageSchedule extends Component {
                                 className='form-control'
                                 value={this.state.currentDate}
                                 minDate={yesterday}
+                                isForSchedule={true}
                             />
                         </div>
                         <div className='col-12 pick-hour-container'>

@@ -137,35 +137,36 @@
 
         // dat.nt : Format ngày hiển thị
         DISPLAY_FORMAT = "d/m/Y";
-
+        
         render() {
-            const { value, onChange, minDate, onClose, ...otherProps } = this.props;
+            const { value, onChange, isForSchedule, onClose, ...otherProps } = this.props;
         
-            // Lấy ngày hiện tại và ngày sau 7 ngày
+            // Ngày hiện tại và ngày giới hạn 7 ngày
             const today = new Date();
-            const sevenDaysLater = new Date(today);
-            sevenDaysLater.setDate(today.getDate() + 7);
+            const maxAllowedDate = new Date(today);
+            maxAllowedDate.setDate(today.getDate() + 7);
         
+            // Cấu hình Flatpickr
             const options = {
                 dateFormat: this.DISPLAY_FORMAT,
                 allowInput: true,
                 disableMobile: true,
                 onClose: onClose,
-                onOpen: this.onOpen,
-                minDate: minDate || today,  // Ngày bắt đầu từ hôm nay
-                maxDate: sevenDaysLater,  // Ngày kết thúc sau 7 ngày
+                minDate: isForSchedule ? today : undefined, // Chỉ cho phép chọn từ hôm nay
+                maxDate: isForSchedule ? maxAllowedDate : undefined, // Giới hạn đến 7 ngày sau
+                disable: [] // Không sử dụng disable để tránh xung đột
             };
         
             return (
                 <Flatpickr
-                    ref={this.nodeRef}
                     value={value}
                     onChange={onChange}
                     options={options}
                     {...otherProps}
                 />
             );
-        }        
+        }
+                
     }
 
     export default DatePicker;

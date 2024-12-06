@@ -179,6 +179,7 @@ class ManagePatient extends Component {
                                     onChange={this.handleOnchangeDatePicker}
                                     className='form-control'
                                     value={this.state.currentDate}
+                                    isForSchedule={true}
                                 />
                             </div>
                             <div className='col-2 form-group select-cus'>
