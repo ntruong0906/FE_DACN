@@ -17,7 +17,7 @@ const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 // Finish!
 function handleEditorChange({ html, text }) {
-  console.log('handleEditorChange', html, text);
+    console.log('handleEditorChange', html, text);
 }
 
 class TableManageUser extends Component {
@@ -26,6 +26,9 @@ class TableManageUser extends Component {
         super(props)
         this.state = {
             userRedux: [],
+            selectedRole: 'all',
+
+
         }
     }
 
@@ -50,6 +53,12 @@ class TableManageUser extends Component {
         this.props.handleEditUserFromParent(user)
     }
 
+    handleFilterChange = (e) => {
+        this.setState({
+          selectedRole: e.target.value,
+        });
+      }
+
     //Life cycle
     //Run Component: 1.Run constructor -> initstate 
     // 2. Did mount (set state)
@@ -57,45 +66,61 @@ class TableManageUser extends Component {
     render() {
         console.log('check all user:', this.props.listUsers)
         console.log('check state:', this.state.userRedux)
-        let arrUsers = this.state.userRedux
+        // let arrUsers = this.state.userRedux
+        // let arrUsers = this.state.userRedux.filter(user => user.roleId === 'R3');
+        let arrUsers = this.state.userRedux;
+        if (this.state.selectedRole !== 'all') {
+            arrUsers = arrUsers.filter(user => user.roleId === this.state.selectedRole);
+            
+        }
+
         return (
             <>
+                <div className="filter-container">
+                    <label>Filter by Role: </label>
+                    <select value={this.state.selectedRole} onChange={this.handleFilterChange}>
+                        <option value="all">All</option>
+                        <option value="R1">Admin</option>
+                        <option value="R2">Bác sĩ</option>
+                        <option value="R3">Bệnh nhân</option>
+                    </select>
+                </div>
                 <table id='TableManageUser'>
-                        <tbody>
-                            <tr>
-                                <th>Email</th>
-                                <th>First name</th>
-                                <th>Last name</th>
-                                <th>Address</th>
-                                <th>Phone number</th>
-                                <th>Actions</th>
-                            </tr>
-                            {arrUsers && arrUsers.length > 0 && 
-                                arrUsers.map((item, index) => {
-                                    return (
-                                        <>
-                                            <tr key={index}>
+                    <tbody>
+                        <tr>
+                            <th>Email</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Address</th>
+                            <th>Phone number</th>
+                            <th>Actions</th>
+                        </tr>
+                        {arrUsers && arrUsers.length > 0 &&
+                            arrUsers.map((item, index) => {
+                                return (
+                                    <>
+                                        <tr key={index}>
                                             <td>{item.email}</td>
                                             <td>{item.firstName}</td>
                                             <td>{item.lastName}</td>
                                             <td>{item.address}</td>
                                             <td>{item.phonenumber}</td>
                                             <td>
-                                                    <button className='btn-edit'
-                                                    onClick={() => this.handleEditUser(item)}    
-                                                    ><i className="fas fa-pencil-alt"></i></button>
+                                                <button className='btn-edit'
+                                                    onClick={() => this.handleEditUser(item)}
+                                                ><i className="fas fa-pencil-alt"></i></button>
 
-                                                    <button className='btn-delete'
+                                                <button className='btn-delete'
                                                     onClick={() => this.handleDeleteUser(item)}
-                                                    ><i className="fas fa-trash-alt"></i></button>
+                                                ><i className="fas fa-trash-alt"></i></button>
                                             </td>
-                                            </tr>
-                                        </>
-                                    )
-                                })    
-                            }                    
-                        </tbody>    
-                </table>   
+                                        </tr>
+                                    </>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
             </>
         );
     }
