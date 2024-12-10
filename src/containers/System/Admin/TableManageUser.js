@@ -60,7 +60,7 @@ class TableManageUser extends Component {
       userRedux = userRedux.filter(user => {
         return user.createdAt && user.createdAt.startsWith(selectedDate);
       });
-    }
+    }//z
 
     return (
       <>
