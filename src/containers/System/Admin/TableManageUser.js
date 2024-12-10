@@ -2,33 +2,48 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './TableManageUser.scss';
-import * as actions from '../../../store/actions';
+import * as actions from '../../../store/actions'
+
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css';
+
+// Register plugins if required
+// MdEditor.use(YOUR_PLUGINS_HERE);
+
+// Initialize a markdown parser
+const mdParser = new MarkdownIt(/* Markdown-it options */);
+
+// Finish!
+function handleEditorChange({ html, text }) {
+  console.log('handleEditorChange', html, text);
+}
 
 class TableManageUser extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userRedux: [],
-      selectedRole: 'all',
-      selectedDate: '' // Thêm trạng thái lưu ngày được chọn
-    };
-  }
 
-  componentDidMount() {
-    this.props.fetchUserRedux();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.listUsers !== this.props.listUsers) {
-      this.setState({
-        userRedux: this.props.listUsers
-      });
+    constructor(props) {
+        super(props)
+        this.state = {
+            userRedux: [],
+        }
     }
-  }
 
-  handleDeleteUser = (user) => {
-    this.props.deleteUserRedux(user.id);
-  }
+    componentDidMount() {
+        this.props.fetchUserRedux()
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.listUsers !== this.props.listUsers) {
+            this.setState({
+                userRedux: this.props.listUsers
+            })
+        }
+    }
+
+    handleDeleteUser = (user) => {
+        this.props.deleteUserRedux(user.id)
+    }
 
   handleEditUser = (user) => {
     console.log('user edit: ', user);
@@ -60,7 +75,7 @@ class TableManageUser extends Component {
       userRedux = userRedux.filter(user => {
         return user.createdAt && user.createdAt.startsWith(selectedDate);
       });
-    }//z
+    }
 
     return (
       <>
@@ -125,16 +140,16 @@ class TableManageUser extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    listUsers: state.admin.users,
-  };
+    return {
+        listUsers: state.admin.users
+    };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    fetchUserRedux: () => dispatch(actions.fetchAllUserStart()),
-    deleteUserRedux: (id) => dispatch(actions.fetchDeleteUser(id)),
-  };
+    return {
+        fetchUserRedux: () => dispatch(actions.fetchAllUserStart()),
+        deleteUserRedux: (id) => dispatch(actions.fetchDeleteUser(id))
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableManageUser);
