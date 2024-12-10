@@ -55,9 +55,9 @@ class TableManageUser extends Component {
 
     handleFilterChange = (e) => {
         this.setState({
-          selectedRole: e.target.value,
+            selectedRole: e.target.value,
         });
-      }
+    }
 
     //Life cycle
     //Run Component: 1.Run constructor -> initstate 
@@ -71,13 +71,12 @@ class TableManageUser extends Component {
         let arrUsers = this.state.userRedux;
         if (this.state.selectedRole !== 'all') {
             arrUsers = arrUsers.filter(user => user.roleId === this.state.selectedRole);
-            
+
         }
 
         return (
             <>
                 <div className="filter-container">
-                    <label>Filter by Role: </label>
                     <select value={this.state.selectedRole} onChange={this.handleFilterChange}>
                         <option value="all">All</option>
                         <option value="R1">Admin</option>
