@@ -13,7 +13,8 @@ class ModalUser extends Component {
             password: '',
             firstName: '',
             lastName: '',
-            address: ''
+            address: '',
+            
         }
 
         this.listenToEmitter()

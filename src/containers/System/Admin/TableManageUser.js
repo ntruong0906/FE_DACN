@@ -107,7 +107,7 @@ class TableManageUser extends Component {
               <th>Last name</th>
               <th>Address</th>
               <th>Phone number</th>
-              <th>Created At</th>
+              <th>Date</th>
               <th>Actions</th>
             </tr>
             {userRedux && userRedux.length > 0 &&
